@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/ex3_os/Barrier.cpp
+Barrier.h
+/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/ex3_os/Barrier.h
+cstdlib
+-
+cstdio
+-
+
+/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/ex3_os/Barrier.h
+pthread.h
+-
+
+/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/ex3_os/main.cpp
+iostream
+-
+

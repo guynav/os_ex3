@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/ex3_os.dir/main.cpp.o CMakeFiles/ex3_os.dir/Barrier.cpp.o CMakeFiles/ex3_os.dir/MapReduceFramwork.cpp.o  -o ex3_os 
