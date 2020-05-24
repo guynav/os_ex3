@@ -148,7 +148,8 @@ JobHandle startMapReduceJob(const MapReduceClient &client,
     pthread_mutex_init(&jc->reduce_mutex, nullptr);
 
     //create threads and their respective mutexes
-    for (int i = 1; i < multiThreadLevel; i++) {
+    for (int i = 1; i < multiThreadLevel; i++)
+    {
         jc->threads->at(i).id = i;
         jc->threads->at(i).jc = &jc;
         pthread_mutex_init(jc->threads->at(i).shuffle_mutex, nullptr);

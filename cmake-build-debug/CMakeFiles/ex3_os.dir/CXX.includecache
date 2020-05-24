@@ -6,19 +6,19 @@
 
 #IncludeRegexTransform: 
 
-/mnt/c/Users/ado_b/CLionProjects/os_ex3.1/Barrier.cpp
+/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/os_ex3/Barrier.cpp
 Barrier.h
-/mnt/c/Users/ado_b/CLionProjects/os_ex3.1/Barrier.h
+/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/os_ex3/Barrier.h
 cstdlib
 -
 cstdio
 -
 
-/mnt/c/Users/ado_b/CLionProjects/os_ex3.1/Barrier.h
+/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/os_ex3/Barrier.h
 pthread.h
 -
 
-/mnt/c/Users/ado_b/CLionProjects/os_ex3.1/MapReduceClient.h
+/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/os_ex3/MapReduceClient.h
 vector
 -
 map
@@ -26,13 +26,13 @@ map
 utility
 -
 
-/mnt/c/Users/ado_b/CLionProjects/os_ex3.1/MapReduceFramework.h
+/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/os_ex3/MapReduceFramework.h
 MapReduceClient.h
-/mnt/c/Users/ado_b/CLionProjects/os_ex3.1/MapReduceClient.h
+/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/os_ex3/MapReduceClient.h
 
-/mnt/c/Users/ado_b/CLionProjects/os_ex3.1/MapReduceFramwork.cpp
+/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/os_ex3/MapReduceFramwork.cpp
 MapReduceFramework.h
-/mnt/c/Users/ado_b/CLionProjects/os_ex3.1/MapReduceFramework.h
+/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/os_ex3/MapReduceFramework.h
 pthread.h
 -
 atomic
@@ -42,9 +42,9 @@ memory
 queue
 -
 Barrier.h
-/mnt/c/Users/ado_b/CLionProjects/os_ex3.1/Barrier.h
+/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/os_ex3/Barrier.h
 
-/mnt/c/Users/ado_b/CLionProjects/os_ex3.1/main.cpp
+/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/os_ex3/main.cpp
 iostream
 -
 
