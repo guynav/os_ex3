@@ -6,19 +6,45 @@
 
 #IncludeRegexTransform: 
 
-/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/ex3_os/Barrier.cpp
+/mnt/c/Users/ado_b/CLionProjects/os_ex3.1/Barrier.cpp
 Barrier.h
-/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/ex3_os/Barrier.h
+/mnt/c/Users/ado_b/CLionProjects/os_ex3.1/Barrier.h
 cstdlib
 -
 cstdio
 -
 
-/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/ex3_os/Barrier.h
+/mnt/c/Users/ado_b/CLionProjects/os_ex3.1/Barrier.h
 pthread.h
 -
 
-/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/ex3_os/main.cpp
+/mnt/c/Users/ado_b/CLionProjects/os_ex3.1/MapReduceClient.h
+vector
+-
+map
+-
+utility
+-
+
+/mnt/c/Users/ado_b/CLionProjects/os_ex3.1/MapReduceFramework.h
+MapReduceClient.h
+/mnt/c/Users/ado_b/CLionProjects/os_ex3.1/MapReduceClient.h
+
+/mnt/c/Users/ado_b/CLionProjects/os_ex3.1/MapReduceFramwork.cpp
+MapReduceFramework.h
+/mnt/c/Users/ado_b/CLionProjects/os_ex3.1/MapReduceFramework.h
+pthread.h
+-
+atomic
+-
+memory
+-
+queue
+-
+Barrier.h
+/mnt/c/Users/ado_b/CLionProjects/os_ex3.1/Barrier.h
+
+/mnt/c/Users/ado_b/CLionProjects/os_ex3.1/main.cpp
 iostream
 -
 
