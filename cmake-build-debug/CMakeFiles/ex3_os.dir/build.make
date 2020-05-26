@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/os_ex3"
+CMAKE_SOURCE_DIR = /mnt/c/Users/ado_b/CLionProjects/os_ex3.1
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/os_ex3/cmake-build-debug"
+CMAKE_BINARY_DIR = /mnt/c/Users/ado_b/CLionProjects/os_ex3.1/cmake-build-debug
 
 # Include any dependencies generated for this target.
 include CMakeFiles/ex3_os.dir/depend.make
@@ -59,16 +59,16 @@ include CMakeFiles/ex3_os.dir/flags.make
 
 CMakeFiles/ex3_os.dir/main.cpp.o: CMakeFiles/ex3_os.dir/flags.make
 CMakeFiles/ex3_os.dir/main.cpp.o: ../main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/os_ex3/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/ex3_os.dir/main.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ex3_os.dir/main.cpp.o -c "/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/os_ex3/main.cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/Users/ado_b/CLionProjects/os_ex3.1/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/ex3_os.dir/main.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ex3_os.dir/main.cpp.o -c /mnt/c/Users/ado_b/CLionProjects/os_ex3.1/main.cpp
 
 CMakeFiles/ex3_os.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ex3_os.dir/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/os_ex3/main.cpp" > CMakeFiles/ex3_os.dir/main.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/ado_b/CLionProjects/os_ex3.1/main.cpp > CMakeFiles/ex3_os.dir/main.cpp.i
 
 CMakeFiles/ex3_os.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ex3_os.dir/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/os_ex3/main.cpp" -o CMakeFiles/ex3_os.dir/main.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/ado_b/CLionProjects/os_ex3.1/main.cpp -o CMakeFiles/ex3_os.dir/main.cpp.s
 
 CMakeFiles/ex3_os.dir/main.cpp.o.requires:
 
@@ -83,16 +83,16 @@ CMakeFiles/ex3_os.dir/main.cpp.o.provides.build: CMakeFiles/ex3_os.dir/main.cpp.
 
 CMakeFiles/ex3_os.dir/Barrier.cpp.o: CMakeFiles/ex3_os.dir/flags.make
 CMakeFiles/ex3_os.dir/Barrier.cpp.o: ../Barrier.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/os_ex3/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/ex3_os.dir/Barrier.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ex3_os.dir/Barrier.cpp.o -c "/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/os_ex3/Barrier.cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/Users/ado_b/CLionProjects/os_ex3.1/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/ex3_os.dir/Barrier.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ex3_os.dir/Barrier.cpp.o -c /mnt/c/Users/ado_b/CLionProjects/os_ex3.1/Barrier.cpp
 
 CMakeFiles/ex3_os.dir/Barrier.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ex3_os.dir/Barrier.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/os_ex3/Barrier.cpp" > CMakeFiles/ex3_os.dir/Barrier.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/ado_b/CLionProjects/os_ex3.1/Barrier.cpp > CMakeFiles/ex3_os.dir/Barrier.cpp.i
 
 CMakeFiles/ex3_os.dir/Barrier.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ex3_os.dir/Barrier.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/os_ex3/Barrier.cpp" -o CMakeFiles/ex3_os.dir/Barrier.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/ado_b/CLionProjects/os_ex3.1/Barrier.cpp -o CMakeFiles/ex3_os.dir/Barrier.cpp.s
 
 CMakeFiles/ex3_os.dir/Barrier.cpp.o.requires:
 
@@ -107,16 +107,16 @@ CMakeFiles/ex3_os.dir/Barrier.cpp.o.provides.build: CMakeFiles/ex3_os.dir/Barrie
 
 CMakeFiles/ex3_os.dir/MapReduceFramwork.cpp.o: CMakeFiles/ex3_os.dir/flags.make
 CMakeFiles/ex3_os.dir/MapReduceFramwork.cpp.o: ../MapReduceFramwork.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/os_ex3/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/ex3_os.dir/MapReduceFramwork.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ex3_os.dir/MapReduceFramwork.cpp.o -c "/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/os_ex3/MapReduceFramwork.cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/Users/ado_b/CLionProjects/os_ex3.1/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/ex3_os.dir/MapReduceFramwork.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ex3_os.dir/MapReduceFramwork.cpp.o -c /mnt/c/Users/ado_b/CLionProjects/os_ex3.1/MapReduceFramwork.cpp
 
 CMakeFiles/ex3_os.dir/MapReduceFramwork.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ex3_os.dir/MapReduceFramwork.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/os_ex3/MapReduceFramwork.cpp" > CMakeFiles/ex3_os.dir/MapReduceFramwork.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/ado_b/CLionProjects/os_ex3.1/MapReduceFramwork.cpp > CMakeFiles/ex3_os.dir/MapReduceFramwork.cpp.i
 
 CMakeFiles/ex3_os.dir/MapReduceFramwork.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ex3_os.dir/MapReduceFramwork.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/os_ex3/MapReduceFramwork.cpp" -o CMakeFiles/ex3_os.dir/MapReduceFramwork.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/ado_b/CLionProjects/os_ex3.1/MapReduceFramwork.cpp -o CMakeFiles/ex3_os.dir/MapReduceFramwork.cpp.s
 
 CMakeFiles/ex3_os.dir/MapReduceFramwork.cpp.o.requires:
 
@@ -143,7 +143,7 @@ ex3_os: CMakeFiles/ex3_os.dir/Barrier.cpp.o
 ex3_os: CMakeFiles/ex3_os.dir/MapReduceFramwork.cpp.o
 ex3_os: CMakeFiles/ex3_os.dir/build.make
 ex3_os: CMakeFiles/ex3_os.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir="/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/os_ex3/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable ex3_os"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/mnt/c/Users/ado_b/CLionProjects/os_ex3.1/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable ex3_os"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/ex3_os.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -162,6 +162,6 @@ CMakeFiles/ex3_os.dir/clean:
 .PHONY : CMakeFiles/ex3_os.dir/clean
 
 CMakeFiles/ex3_os.dir/depend:
-	cd "/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/os_ex3/cmake-build-debug" && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" "/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/os_ex3" "/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/os_ex3" "/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/os_ex3/cmake-build-debug" "/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/os_ex3/cmake-build-debug" "/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/os_ex3/cmake-build-debug/CMakeFiles/ex3_os.dir/DependInfo.cmake" --color=$(COLOR)
+	cd /mnt/c/Users/ado_b/CLionProjects/os_ex3.1/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /mnt/c/Users/ado_b/CLionProjects/os_ex3.1 /mnt/c/Users/ado_b/CLionProjects/os_ex3.1 /mnt/c/Users/ado_b/CLionProjects/os_ex3.1/cmake-build-debug /mnt/c/Users/ado_b/CLionProjects/os_ex3.1/cmake-build-debug /mnt/c/Users/ado_b/CLionProjects/os_ex3.1/cmake-build-debug/CMakeFiles/ex3_os.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/ex3_os.dir/depend
 

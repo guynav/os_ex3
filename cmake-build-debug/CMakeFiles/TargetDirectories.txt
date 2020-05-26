@@ -1,3 +1,3 @@
-/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/os_ex3/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/os_ex3/cmake-build-debug/CMakeFiles/ex3_os.dir
-/mnt/c/Users/guyn2/Google Drive/huji/sem 5/Os/os_ex3/cmake-build-debug/CMakeFiles/edit_cache.dir
+/mnt/c/Users/ado_b/CLionProjects/os_ex3.1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/mnt/c/Users/ado_b/CLionProjects/os_ex3.1/cmake-build-debug/CMakeFiles/ex3_os.dir
+/mnt/c/Users/ado_b/CLionProjects/os_ex3.1/cmake-build-debug/CMakeFiles/edit_cache.dir
