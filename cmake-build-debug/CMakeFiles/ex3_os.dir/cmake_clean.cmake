@@ -1,7 +1,8 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/ex3_os.dir/main.cpp.o"
   "CMakeFiles/ex3_os.dir/Barrier.cpp.o"
   "CMakeFiles/ex3_os.dir/MapReduceFramwork.cpp.o"
+  "CMakeFiles/ex3_os.dir/FileWordCounter.cpp.o"
+  "CMakeFiles/ex3_os.dir/SampleClient.cpp.o"
   "ex3_os.pdb"
   "ex3_os"
 )

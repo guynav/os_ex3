@@ -1,33 +1,32 @@
 CC=g++
 CXX=g++
-RANLIB=ranlib
+LD=g++
 
-LIBSRC=MapReduceFramework.cpp Barrier.cpp
-LIBOBJ=$(LIBSRC:.cpp=.o)
+EXESRC=FileWordCounter.cpp SampleClient.cpp
+EXEOBJ=$(EXESRC:.cpp=.o)
 
-INCS=-I.
-CFLAGS = -Wall -std=c++11 -fpermissive  -g $(INCS) 
-CXXFLAGS = -Wall -std=c++11 -fpermissive  -g $(INCS) 
+INCS=-I. -I..
+CFLAGS = -Wall -std=c++11 -pthread -g $(INCS)
+CXXFLAGS =  -Wall -std=c++11 -pthread -g $(INCS)  
+LDFLAGS = -L.. -L. -lMapReduceFramework
 
-OSMLIB = libMapReduceFramework.a
-TARGETS = $(OSMLIB)
+EXEFILE = FileWordCounter 
+EXESIMPLE = SampleClient
+TARGETS = $(EXEFILE) $(EXESIMPLE)
 
 TAR=tar
-TARFLAGS=-cvf
-TARNAME=ex5.tar
-TARSRCS=$(LIBSRC) Makefile README Barrier.h
+TARFLAGS=-cf
+TARNAME=sampleclient.tar
+TARSRCS=$(EXESRC) Makefile $(TEST_TAR)
 
 all: $(TARGETS)
 
-$(TARGETS): $(LIBOBJ)
-	$(AR) $(ARFLAGS) $@ $^
-	$(RANLIB) $@
+$(TARGETS): %: %.o
+	$(LD) $(CXXFLAGS) $< $(LDFLAGS) -o $@
 
+	
 clean:
-	$(RM) $(TARGETS) $(OSMLIB) $(OBJ) $(LIBOBJ) *~ *core
+	$(RM) $(TARGETS) $(EXE) $(OBJ) $(EXEOBJ) *~ *core
 
 depend:
 	makedepend -- $(CFLAGS) -- $(SRC) $(LIBSRC)
-
-tar:
-	$(TAR) $(TARFLAGS) $(TARNAME) $(TARSRCS)

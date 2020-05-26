@@ -4,9 +4,10 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/mnt/c/Users/ado_b/CLionProjects/os_ex3.1/Barrier.cpp" "/mnt/c/Users/ado_b/CLionProjects/os_ex3.1/cmake-build-debug/CMakeFiles/ex3_os.dir/Barrier.cpp.o"
-  "/mnt/c/Users/ado_b/CLionProjects/os_ex3.1/MapReduceFramwork.cpp" "/mnt/c/Users/ado_b/CLionProjects/os_ex3.1/cmake-build-debug/CMakeFiles/ex3_os.dir/MapReduceFramwork.cpp.o"
-  "/mnt/c/Users/ado_b/CLionProjects/os_ex3.1/main.cpp" "/mnt/c/Users/ado_b/CLionProjects/os_ex3.1/cmake-build-debug/CMakeFiles/ex3_os.dir/main.cpp.o"
+  "/cs/usr/toozig/year3/OS/os_ex3/Barrier.cpp" "/cs/usr/toozig/year3/OS/os_ex3/cmake-build-debug/CMakeFiles/ex3_os.dir/Barrier.cpp.o"
+  "/cs/usr/toozig/year3/OS/os_ex3/FileWordCounter.cpp" "/cs/usr/toozig/year3/OS/os_ex3/cmake-build-debug/CMakeFiles/ex3_os.dir/FileWordCounter.cpp.o"
+  "/cs/usr/toozig/year3/OS/os_ex3/MapReduceFramwork.cpp" "/cs/usr/toozig/year3/OS/os_ex3/cmake-build-debug/CMakeFiles/ex3_os.dir/MapReduceFramwork.cpp.o"
+  "/cs/usr/toozig/year3/OS/os_ex3/SampleClient.cpp" "/cs/usr/toozig/year3/OS/os_ex3/cmake-build-debug/CMakeFiles/ex3_os.dir/SampleClient.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

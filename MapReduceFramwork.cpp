@@ -24,6 +24,9 @@ public:
         atomic_init(&reduceCounter, 0);
         pthread_mutex_init(&map_mutex, nullptr);
         pthread_mutex_init(&reduce_mutex, nullptr);
+        for(int i = 0; i< multiThreadLevel; i++){
+            threads->push_back(ThreadContext {id}) //todo initiate the struct or make it a class. help me, I'm dying.
+        }
     };
 
     ~JobContext(){delete[] threads;};
@@ -43,22 +46,6 @@ public:
 
 };
 
-
-//typedef struct {
-//    stage_t stage;
-//    const MapReduceClient &client;
-//    const InputVec &in_vec;
-//    IntermediateMap *intermedita_vec;
-//    std::vector<K2> *k2Vec;
-//    OutputVec &out_vec;
-//    std::atomic<int> mapCounter;
-//    std::atomic<int> reduceCounter;
-//    std::vector<ThreadContext> *threads;
-//    pthread_mutex_t map_mutex;
-//    pthread_mutex_t reduce_mutex;
-//    Barrier barrier;
-//
-//} JobContext;
 
 void reduceThread(void *args) {
     auto *tc = (ThreadContext *) args;
@@ -131,16 +118,7 @@ JobHandle startMapReduceJob(const MapReduceClient &client,
     //create job context
 
     std::shared_ptr<JobContext> jc(new JobContext(client,inputVec, outputVec, multiThreadLevel));
-//            .stage =   UNDEFINED_STAGE,
-//            .client =   client,
-//            .in_vec =   inputVec,
-//            .intermedita_vec =  nullptr,
-//            .k2Vec = nullptr,
-//            .out_vec = outputVec,
-//            .threads = new std::vector<ThreadContext>[multiThreadLevel],
-//            .barrier = Barrier(multiThreadLevel),
-//
-//    ));
+
 
     atomic_init(&jc->mapCounter, 0);
     atomic_init(&jc->reduceCounter, 0);
@@ -179,6 +157,37 @@ void emit3(K3 *key, V3 *value, void *context) {
     pthread_mutex_lock(&jc->reduce_mutex);
     jc->out_vec.emplace_back(key, value);
     pthread_mutex_unlock(&jc->reduce_mutex);
+}
+
+void getJobState(JobHandle job, JobState * state)
+{
+    JobContext * jc = (JobContext*) job;
+    state->stage = jc->stage;
+    switch(jc->stage){
+        case UNDEFINED_STAGE:
+            state->percentage = 0;
+            break;
+        case MAP_STAGE:
+            state->percentage = 100 * ((float) jc->mapCounter / (float) jc->in_vec.size());
+            break;
+        case REDUCE_STAGE:
+            state->percentage  = 100 * ((float )  jc->reduceCounter /(float) jc->intermedita_vec->size());
+    }
+}
+
+void waitForJob(JobHandle job)
+{
+    JobContext * jc = (JobContext*) job;
+    for(auto& thread : *jc->threads){
+        pthread_join(*thread.thread, NULL);
+    }
+}
+
+void closeJobHandle(JobHandle job)
+{
+    waitForJob(job);
+    JobContext * jc = (JobContext*) job;
+    delete  jc;
 }
 
 
