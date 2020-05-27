@@ -48,10 +48,10 @@ RM = /usr/local/APP/jetbrains/clion/2019.2.1/bin/cmake/linux/bin/cmake -E remove
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /cs/usr/toozig/year3/OS/os_ex3
+CMAKE_SOURCE_DIR = /cs/usr/guyna25/Desktop/os_ex3
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /cs/usr/toozig/year3/OS/os_ex3/cmake-build-debug
+CMAKE_BINARY_DIR = /cs/usr/guyna25/Desktop/os_ex3/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /cs/usr/toozig/year3/OS/os_ex3/cmake-build-debug/CMakeFiles /cs/usr/toozig/year3/OS/os_ex3/cmake-build-debug/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /cs/usr/guyna25/Desktop/os_ex3/cmake-build-debug/CMakeFiles /cs/usr/guyna25/Desktop/os_ex3/cmake-build-debug/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /cs/usr/toozig/year3/OS/os_ex3/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /cs/usr/guyna25/Desktop/os_ex3/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -111,17 +111,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named ex3_os
+# Target rules for targets named os_ex3
 
 # Build rule for target.
-ex3_os: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 ex3_os
-.PHONY : ex3_os
+os_ex3: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 os_ex3
+.PHONY : os_ex3
 
 # fast build rule for target.
-ex3_os/fast:
-	$(MAKE) -f CMakeFiles/ex3_os.dir/build.make CMakeFiles/ex3_os.dir/build
-.PHONY : ex3_os/fast
+os_ex3/fast:
+	$(MAKE) -f CMakeFiles/os_ex3.dir/build.make CMakeFiles/os_ex3.dir/build
+.PHONY : os_ex3/fast
 
 Barrier.o: Barrier.cpp.o
 
@@ -129,7 +129,7 @@ Barrier.o: Barrier.cpp.o
 
 # target to build an object file
 Barrier.cpp.o:
-	$(MAKE) -f CMakeFiles/ex3_os.dir/build.make CMakeFiles/ex3_os.dir/Barrier.cpp.o
+	$(MAKE) -f CMakeFiles/os_ex3.dir/build.make CMakeFiles/os_ex3.dir/Barrier.cpp.o
 .PHONY : Barrier.cpp.o
 
 Barrier.i: Barrier.cpp.i
@@ -138,7 +138,7 @@ Barrier.i: Barrier.cpp.i
 
 # target to preprocess a source file
 Barrier.cpp.i:
-	$(MAKE) -f CMakeFiles/ex3_os.dir/build.make CMakeFiles/ex3_os.dir/Barrier.cpp.i
+	$(MAKE) -f CMakeFiles/os_ex3.dir/build.make CMakeFiles/os_ex3.dir/Barrier.cpp.i
 .PHONY : Barrier.cpp.i
 
 Barrier.s: Barrier.cpp.s
@@ -147,35 +147,8 @@ Barrier.s: Barrier.cpp.s
 
 # target to generate assembly for a file
 Barrier.cpp.s:
-	$(MAKE) -f CMakeFiles/ex3_os.dir/build.make CMakeFiles/ex3_os.dir/Barrier.cpp.s
+	$(MAKE) -f CMakeFiles/os_ex3.dir/build.make CMakeFiles/os_ex3.dir/Barrier.cpp.s
 .PHONY : Barrier.cpp.s
-
-FileWordCounter.o: FileWordCounter.cpp.o
-
-.PHONY : FileWordCounter.o
-
-# target to build an object file
-FileWordCounter.cpp.o:
-	$(MAKE) -f CMakeFiles/ex3_os.dir/build.make CMakeFiles/ex3_os.dir/FileWordCounter.cpp.o
-.PHONY : FileWordCounter.cpp.o
-
-FileWordCounter.i: FileWordCounter.cpp.i
-
-.PHONY : FileWordCounter.i
-
-# target to preprocess a source file
-FileWordCounter.cpp.i:
-	$(MAKE) -f CMakeFiles/ex3_os.dir/build.make CMakeFiles/ex3_os.dir/FileWordCounter.cpp.i
-.PHONY : FileWordCounter.cpp.i
-
-FileWordCounter.s: FileWordCounter.cpp.s
-
-.PHONY : FileWordCounter.s
-
-# target to generate assembly for a file
-FileWordCounter.cpp.s:
-	$(MAKE) -f CMakeFiles/ex3_os.dir/build.make CMakeFiles/ex3_os.dir/FileWordCounter.cpp.s
-.PHONY : FileWordCounter.cpp.s
 
 MapReduceFramwork.o: MapReduceFramwork.cpp.o
 
@@ -183,7 +156,7 @@ MapReduceFramwork.o: MapReduceFramwork.cpp.o
 
 # target to build an object file
 MapReduceFramwork.cpp.o:
-	$(MAKE) -f CMakeFiles/ex3_os.dir/build.make CMakeFiles/ex3_os.dir/MapReduceFramwork.cpp.o
+	$(MAKE) -f CMakeFiles/os_ex3.dir/build.make CMakeFiles/os_ex3.dir/MapReduceFramwork.cpp.o
 .PHONY : MapReduceFramwork.cpp.o
 
 MapReduceFramwork.i: MapReduceFramwork.cpp.i
@@ -192,7 +165,7 @@ MapReduceFramwork.i: MapReduceFramwork.cpp.i
 
 # target to preprocess a source file
 MapReduceFramwork.cpp.i:
-	$(MAKE) -f CMakeFiles/ex3_os.dir/build.make CMakeFiles/ex3_os.dir/MapReduceFramwork.cpp.i
+	$(MAKE) -f CMakeFiles/os_ex3.dir/build.make CMakeFiles/os_ex3.dir/MapReduceFramwork.cpp.i
 .PHONY : MapReduceFramwork.cpp.i
 
 MapReduceFramwork.s: MapReduceFramwork.cpp.s
@@ -201,7 +174,7 @@ MapReduceFramwork.s: MapReduceFramwork.cpp.s
 
 # target to generate assembly for a file
 MapReduceFramwork.cpp.s:
-	$(MAKE) -f CMakeFiles/ex3_os.dir/build.make CMakeFiles/ex3_os.dir/MapReduceFramwork.cpp.s
+	$(MAKE) -f CMakeFiles/os_ex3.dir/build.make CMakeFiles/os_ex3.dir/MapReduceFramwork.cpp.s
 .PHONY : MapReduceFramwork.cpp.s
 
 SampleClient.o: SampleClient.cpp.o
@@ -210,7 +183,7 @@ SampleClient.o: SampleClient.cpp.o
 
 # target to build an object file
 SampleClient.cpp.o:
-	$(MAKE) -f CMakeFiles/ex3_os.dir/build.make CMakeFiles/ex3_os.dir/SampleClient.cpp.o
+	$(MAKE) -f CMakeFiles/os_ex3.dir/build.make CMakeFiles/os_ex3.dir/SampleClient.cpp.o
 .PHONY : SampleClient.cpp.o
 
 SampleClient.i: SampleClient.cpp.i
@@ -219,7 +192,7 @@ SampleClient.i: SampleClient.cpp.i
 
 # target to preprocess a source file
 SampleClient.cpp.i:
-	$(MAKE) -f CMakeFiles/ex3_os.dir/build.make CMakeFiles/ex3_os.dir/SampleClient.cpp.i
+	$(MAKE) -f CMakeFiles/os_ex3.dir/build.make CMakeFiles/os_ex3.dir/SampleClient.cpp.i
 .PHONY : SampleClient.cpp.i
 
 SampleClient.s: SampleClient.cpp.s
@@ -228,7 +201,7 @@ SampleClient.s: SampleClient.cpp.s
 
 # target to generate assembly for a file
 SampleClient.cpp.s:
-	$(MAKE) -f CMakeFiles/ex3_os.dir/build.make CMakeFiles/ex3_os.dir/SampleClient.cpp.s
+	$(MAKE) -f CMakeFiles/os_ex3.dir/build.make CMakeFiles/os_ex3.dir/SampleClient.cpp.s
 .PHONY : SampleClient.cpp.s
 
 # Help Target
@@ -238,14 +211,11 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
-	@echo "... ex3_os"
+	@echo "... os_ex3"
 	@echo "... edit_cache"
 	@echo "... Barrier.o"
 	@echo "... Barrier.i"
 	@echo "... Barrier.s"
-	@echo "... FileWordCounter.o"
-	@echo "... FileWordCounter.i"
-	@echo "... FileWordCounter.s"
 	@echo "... MapReduceFramwork.o"
 	@echo "... MapReduceFramwork.i"
 	@echo "... MapReduceFramwork.s"

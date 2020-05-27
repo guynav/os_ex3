@@ -1,1 +1,0 @@
-/usr/bin/c++  -g -fno-omit-frame-pointer -fsanitize=thread   CMakeFiles/ex3_os.dir/Barrier.cpp.o CMakeFiles/ex3_os.dir/MapReduceFramwork.cpp.o CMakeFiles/ex3_os.dir/FileWordCounter.cpp.o CMakeFiles/ex3_os.dir/SampleClient.cpp.o  -o ex3_os 

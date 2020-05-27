@@ -8,28 +8,59 @@
 typedef struct {
     int id;
     pthread_t *thread;
-    pthread_mutex_t *shuffle_mutex;
-    std::vector<IntermediatePair> toShuffle;
+    pthread_mutex_t shuffle_mutex;
+    std::vector<IntermediatePair> * toShuffle;
     void *jc;
 } ThreadContext;
 
+void *mapThread(void *args);
+void *shuffleThread(void *args);
 
-class JobContext {
+class JobContext
+{
 public:
-    JobContext(const MapReduceClient &_client, InputVec _in_vec, OutputVec _out_vec, int multiThreadLevel):stage(UNDEFINED_STAGE),
-    client(_client), in_vec(_in_vec), intermedita_vec(nullptr), k2Vec(nullptr), out_vec(_out_vec),
-    threads(new std::vector<ThreadContext>[multiThreadLevel]), barrier(Barrier(multiThreadLevel))
+    JobContext(const MapReduceClient &_client, const InputVec& _in_vec, OutputVec& _out_vec, int
+    multiThreadLevel)
+    : stage(UNDEFINED_STAGE), client(_client), in_vec(_in_vec), intermedita_vec(nullptr), k2Vec
+    (nullptr), out_vec(_out_vec),
+    barrier(Barrier(multiThreadLevel)), threadAmount(multiThreadLevel)
     {
+        threads = new ThreadContext[multiThreadLevel];
+        intermedita_vec = new IntermediateMap();
         atomic_init(&mapCounter, 0);
         atomic_init(&reduceCounter, 0);
         pthread_mutex_init(&map_mutex, nullptr);
         pthread_mutex_init(&reduce_mutex, nullptr);
-        for(int i = 0; i< multiThreadLevel; i++){
-            threads->push_back(ThreadContext {id}) //todo initiate the struct or make it a class. help me, I'm dying.
-        }
-    };
 
-    ~JobContext(){delete[] threads;};
+
+        for(int i = 1; i< multiThreadLevel; i++)
+        {
+            threads[i].id = i;
+            threads[i].toShuffle = new std::vector<IntermediatePair>();
+            threads[i].thread = new pthread_t;
+            threads[i].jc = this;
+            pthread_mutex_init(&threads[i].shuffle_mutex, nullptr);
+            //help me, I'm dying.
+        }
+        threads[0].id = 0;
+        threads[0].toShuffle = new std::vector<IntermediatePair>();
+        threads[0].thread = new pthread_t;
+        threads[0].jc = this;
+        pthread_mutex_init(&threads[0].shuffle_mutex, nullptr);
+        //pthread_create(threads[0].thread, nullptr, shuffleThread, &threads[0]);
+    };
+    ~JobContext()
+    {
+        for (int i = 0; i<threadAmount; i++)
+        {
+            delete threads[i].toShuffle;
+            delete &threads[i].shuffle_mutex;
+            delete threads[i].thread;
+            delete threads[i].toShuffle;
+        }
+        delete intermedita_vec;
+        delete[] threads;
+    };
 
     stage_t stage;
     const MapReduceClient &client;
@@ -39,11 +70,11 @@ public:
     OutputVec &out_vec;
     std::atomic<int> mapCounter;
     std::atomic<int> reduceCounter;
-    std::vector<ThreadContext> *threads;
+    ThreadContext * threads;
     pthread_mutex_t map_mutex;
     pthread_mutex_t reduce_mutex;
     Barrier barrier;
-
+    int threadAmount;
 };
 
 
@@ -67,13 +98,15 @@ void *mapThread(void *args) {
     int tempMapCounter;
     while (jc->mapCounter < jc->in_vec.size()) {
         pthread_mutex_lock(&(jc->map_mutex));
-        if (jc->mapCounter == jc->in_vec.size()) {
+        if (jc->mapCounter == jc->in_vec.size())
+        {
             pthread_mutex_unlock(&jc->map_mutex);
             break;
         }
-        tempMapCounter = jc->mapCounter++;
+        tempMapCounter = jc->mapCounter;
+        jc->mapCounter++;;
         pthread_mutex_unlock(&jc->map_mutex);
-        jc->client.map(jc->in_vec[tempMapCounter].first, jc->in_vec[tempMapCounter].second, &tc);
+        jc->client.map(jc->in_vec[tempMapCounter].first, jc->in_vec[tempMapCounter].second, args);
     }
     jc->barrier.barrier();
     //start reduce
@@ -81,19 +114,31 @@ void *mapThread(void *args) {
     return nullptr;
 }
 
-void *shuffleThread(void *args) {
-    auto *jc = (JobContext *) args;
+void *shuffleThread(void *args)
+{
+    auto tc = (ThreadContext*) args;
+    auto jc = (JobContext *) tc->jc;
     auto *toShuffle = new std::vector<IntermediatePair>;
     int pushedCounter = 0;
     while (pushedCounter < jc->in_vec.size()) {
-        for (int i = 0; i < jc->threads->size(); i++) {
-            if (!jc->threads->at(i).toShuffle.empty()) {
+        for (int i = 1; i < jc->threadAmount; i++) {
+            if (!jc->threads[i].toShuffle->empty())
+            {
 
-                pthread_mutex_lock(jc->threads->at(i).shuffle_mutex);
-                toShuffle->swap(jc->threads->at(i).toShuffle);
-                pthread_mutex_unlock(jc->threads->at(i).shuffle_mutex);
-                for (auto &element : *toShuffle) {
-                    jc->intermedita_vec->at(element.first).push_back(element.second);
+                pthread_mutex_lock(&jc->threads[i].shuffle_mutex);
+                toShuffle->swap(*(jc->threads[i].toShuffle));
+                pthread_mutex_unlock(&jc->threads[i].shuffle_mutex);
+                for (auto &element : *toShuffle)
+                {
+                    if (jc->intermedita_vec->count(element.first))
+                    {
+                        jc->intermedita_vec->at(element.first).push_back(element.second);
+                    }
+                    else //need to create key vector
+                    {
+                        jc->intermedita_vec->emplace(element.first, std::vector<V2 *>());
+                        jc->intermedita_vec->at(element.first).push_back(element.second);
+                    }
                 }
                 pushedCounter += toShuffle->size();
                 toShuffle->clear();
@@ -101,7 +146,6 @@ void *shuffleThread(void *args) {
         }
     }
     delete toShuffle; //might delete automatically
-
     jc->k2Vec = new std::vector<K2 *>();
     for (auto element = jc->intermedita_vec->begin(); element != jc->intermedita_vec->end(); ++element) {
         jc->k2Vec->push_back(element->first);
@@ -118,36 +162,29 @@ JobHandle startMapReduceJob(const MapReduceClient &client,
     //create job context
 
     std::shared_ptr<JobContext> jc(new JobContext(client,inputVec, outputVec, multiThreadLevel));
-
-
-    atomic_init(&jc->mapCounter, 0);
-    atomic_init(&jc->reduceCounter, 0);
-    pthread_mutex_init(&jc->map_mutex, nullptr);
-    pthread_mutex_init(&jc->reduce_mutex, nullptr);
-
     //create threads and their respective mutexes
-    for (int i = 1; i < multiThreadLevel; i++)
+    for(int i = 1; i< multiThreadLevel; i++)
     {
-        jc->threads->at(i).id = i;
-        jc->threads->at(i).jc = &jc;
-        pthread_mutex_init(jc->threads->at(i).shuffle_mutex, nullptr);
-        pthread_create(jc->threads->at(i).thread, nullptr, mapThread, &jc->threads->at(i));
+        auto stam = jc->threads[i];
+        pthread_create(jc->threads[i].thread, nullptr, mapThread, &jc->threads[i]);
+
+        //help me, I'm dying.
     }
-    pthread_create(jc->threads->at(0).thread, nullptr, mapThread, &jc);
-    jc->threads->at(0).shuffle_mutex = nullptr; //just for safety
+    pthread_create(jc->threads[0].thread, nullptr, shuffleThread, &jc->threads[0]);
+
 
     //barrier
     //reduce
     //return job handle
-
+    return (JobHandle) &(*jc);
 }
 
 void emit2(K2 *key, V2 *value, void *context) {
-    auto *tc = (ThreadContext *) context;
+    auto tc = (ThreadContext *) context;
     IntermediatePair tempPair(key, value);
-    pthread_mutex_lock(tc->shuffle_mutex);
-    tc->toShuffle.push_back(tempPair);
-    pthread_mutex_unlock(tc->shuffle_mutex);
+    pthread_mutex_lock(&tc->shuffle_mutex);
+    tc->toShuffle->push_back(tempPair);
+    pthread_mutex_unlock(&tc->shuffle_mutex);
 }
 
 void emit3(K3 *key, V3 *value, void *context) {
@@ -177,16 +214,16 @@ void getJobState(JobHandle job, JobState * state)
 
 void waitForJob(JobHandle job)
 {
-    JobContext * jc = (JobContext*) job;
-    for(auto& thread : *jc->threads){
-        pthread_join(*thread.thread, NULL);
+    auto jc = (JobContext*) job;
+    for(int i = 0; i < jc->threadAmount; i++){
+        pthread_join(*jc->threads[i].thread, nullptr);
     }
 }
 
 void closeJobHandle(JobHandle job)
 {
     waitForJob(job);
-    JobContext * jc = (JobContext*) job;
+    auto jc = (JobContext*) job;
     delete  jc;
 }
 
