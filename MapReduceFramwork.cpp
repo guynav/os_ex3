@@ -82,9 +82,11 @@ void reduceThread(void *args) {
     auto *tc = (ThreadContext *) args;
     auto *jc = (JobContext *) tc->jc;
     int tempReduceCounter;
-    while (jc->reduceCounter < jc->k2Vec->size()) {
-        pthread_mutex_lock(&jc->reduce_mutex);
+    while ((int) jc->reduceCounter < jc->k2Vec->size()) {
+//        pthread_mutex_lock(&(jc->reduce_mutex));
+        pthread_mutex_lock(&(jc->map_mutex));
         tempReduceCounter = jc->reduceCounter++;
+//        pthread_mutex_unlock(&jc->map_mutex);
         pthread_mutex_unlock(&jc->map_mutex);
         K2  * currKey = jc->k2Vec->at(tempReduceCounter);
         jc->client.reduce(currKey, jc->intermedita_vec->find(currKey)->second, (void *) jc);
@@ -150,6 +152,7 @@ void *shuffleThread(void *args)
     for (auto element = jc->intermedita_vec->begin(); element != jc->intermedita_vec->end(); ++element) {
         jc->k2Vec->push_back(element->first);
     }
+    pthread_mutex_unlock(&jc->reduce_mutex);
     jc->barrier.barrier();
     jc->stage = REDUCE_STAGE;
     reduceThread(args);
