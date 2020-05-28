@@ -113,7 +113,7 @@ int main(int argc, char** argv)
         last_state = state;
 		getJobState(job, &state);
 	}
-	std::cout << "I'm here" << std::endl;
+
     printf("stage %d, %f%% \n", state.stage, state.percentage);
 	printf("Done!\n");
 	
@@ -128,6 +128,7 @@ int main(int argc, char** argv)
 		delete pair.second;
 	}
 	
+
 	return 0;
 }
 

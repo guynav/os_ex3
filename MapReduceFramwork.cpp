@@ -3,7 +3,9 @@
 #include <atomic>
 #include <memory>
 #include <queue>
+#include <iostream>
 #include "Barrier.h"
+#include <algorithm>
 
 typedef struct {
     int id;
@@ -53,13 +55,15 @@ public:
     {
         for (int i = 0; i<threadAmount; i++)
         {
+            pthread_mutex_lock(&threads[i].shuffle_mutex);
             delete threads[i].toShuffle;
+            pthread_mutex_unlock(&threads[i].shuffle_mutex);
             delete &threads[i].shuffle_mutex;
             delete threads[i].thread;
             delete threads[i].toShuffle;
+            delete &threads[i];
         }
-        delete intermedita_vec;
-        delete[] threads;
+        //delete intermedita_vec;
     };
 
     stage_t stage;
@@ -83,12 +87,18 @@ void reduceThread(void *args) {
     auto *jc = (JobContext *) tc->jc;
     int tempReduceCounter;
     while ((int) jc->reduceCounter < jc->k2Vec->size()) {
-//        pthread_mutex_lock(&(jc->reduce_mutex));
-        pthread_mutex_lock(&(jc->map_mutex));
+        pthread_mutex_lock(&(jc->reduce_mutex));
+//        pthread_mutex_lock(&(jc->map_mutex));
         tempReduceCounter = jc->reduceCounter++;
+        pthread_mutex_unlock(&jc->reduce_mutex);
 //        pthread_mutex_unlock(&jc->map_mutex);
-        pthread_mutex_unlock(&jc->map_mutex);
+        if(tempReduceCounter >= jc->k2Vec->size())
+        {
+            break;
+        }
         K2  * currKey = jc->k2Vec->at(tempReduceCounter);
+        //std::cout << "I'm reducing" << std::endl;
+        // in case the counter reached the limit
         jc->client.reduce(currKey, jc->intermedita_vec->find(currKey)->second, (void *) jc);
     }
 }
@@ -96,18 +106,18 @@ void reduceThread(void *args) {
 void *mapThread(void *args) {
     auto *tc = (ThreadContext *) args;
     auto *jc = (JobContext *) tc->jc;
-    jc->stage = MAP_STAGE;
     int tempMapCounter;
     while (jc->mapCounter < jc->in_vec.size()) {
         pthread_mutex_lock(&(jc->map_mutex));
         if (jc->mapCounter == jc->in_vec.size())
         {
             pthread_mutex_unlock(&jc->map_mutex);
-            break;
+            break; //todo ask whether all thtreads should be initiated before starting to run
         }
         tempMapCounter = jc->mapCounter;
         jc->mapCounter++;;
         pthread_mutex_unlock(&jc->map_mutex);
+        //std::cout << "I'm mapping" << std::endl;
         jc->client.map(jc->in_vec[tempMapCounter].first, jc->in_vec[tempMapCounter].second, args);
     }
     jc->barrier.barrier();
@@ -122,12 +132,12 @@ void *shuffleThread(void *args)
     auto jc = (JobContext *) tc->jc;
     auto *toShuffle = new std::vector<IntermediatePair>;
     int pushedCounter = 0;
+    jc->stage = MAP_STAGE; //todo verify this is the correct stage and not shuffle
     while (pushedCounter < jc->in_vec.size()) {
         for (int i = 1; i < jc->threadAmount; i++) {
+            pthread_mutex_lock(&jc->threads[i].shuffle_mutex);
             if (!jc->threads[i].toShuffle->empty())
             {
-
-                pthread_mutex_lock(&jc->threads[i].shuffle_mutex);
                 toShuffle->swap(*(jc->threads[i].toShuffle));
                 pthread_mutex_unlock(&jc->threads[i].shuffle_mutex);
                 for (auto &element : *toShuffle)
@@ -144,6 +154,8 @@ void *shuffleThread(void *args)
                 }
                 pushedCounter += toShuffle->size();
                 toShuffle->clear();
+            } else {
+                pthread_mutex_unlock(&jc->threads[i].shuffle_mutex);
             }
         }
     }
@@ -168,7 +180,7 @@ JobHandle startMapReduceJob(const MapReduceClient &client,
     //create threads and their respective mutexes
     for(int i = 1; i< multiThreadLevel; i++)
     {
-        auto stam = jc->threads[i];
+//        auto stam = jc->threads[i];
         pthread_create(jc->threads[i].thread, nullptr, mapThread, &jc->threads[i]);
 
         //help me, I'm dying.
@@ -202,16 +214,19 @@ void emit3(K3 *key, V3 *value, void *context) {
 void getJobState(JobHandle job, JobState * state)
 {
     JobContext * jc = (JobContext*) job;
+    bool cond;
     state->stage = jc->stage;
     switch(jc->stage){
         case UNDEFINED_STAGE:
             state->percentage = 0;
             break;
         case MAP_STAGE:
-            state->percentage = 100 * ((float) jc->mapCounter / (float) jc->in_vec.size());
+            cond = ((float) jc->mapCounter < (float) jc->in_vec.size());
+            state->percentage = cond? 100 * ((float) jc->mapCounter / (float) jc->in_vec.size()) : 100;
             break;
         case REDUCE_STAGE:
-            state->percentage  = 100 * ((float )  jc->reduceCounter /(float) jc->intermedita_vec->size());
+            cond = ((float )  jc->reduceCounter < (float) jc->intermedita_vec->size());
+            state->percentage  =  cond ? 100 * ((float )  jc->reduceCounter /(float) jc->intermedita_vec->size()) : 100;
     }
 }
 
