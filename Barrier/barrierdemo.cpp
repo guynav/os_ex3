@@ -12,16 +12,16 @@ struct ThreadContext {
 
 void* foo(void* arg)
 {
-	ThreadContext* tc = (ThreadContext*) arg;
-	printf("Before barriers: %d\n", tc->threadID);
-
-	tc->barrier->barrier();
-
-	printf("Between barriers: %d\n", tc->threadID);
-
-	tc->barrier->barrier();
-
-	printf("After barriers: %d\n", tc->threadID);
+//	ThreadContext* tc = (ThreadContext*) arg;
+//	printf("Before barriers: %d\n", tc->threadID);
+//
+//	tc->barrier->barrier();
+//
+//	printf("Between barriers: %d\n", tc->threadID);
+//
+//	tc->barrier->barrier();
+//
+//	printf("After barriers: %d\n", tc->threadID);
 
 	return 0;
 }

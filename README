@@ -1,20 +1,13 @@
-HUJI 67808 - Operating Systems - Ex3 - Map Reduce Client Example
+H
+Q1
+The optimal number of threads is the number of the computer's cpu.
+Since the bottleneck of the program is the cpu, it means that no matter how many therads we are going to have,
+The hardwere of the computer will be the main limitation.
 
-SampleClient.cpp - 
- * The input is given as a sequence of input elements.
- * (Map phase) The map function is applied to each input element, producing a sequence of intermediary elements.
- * (Sort/Shuffle phases) The intermediary elements are sorted into new sequences (more on this later).
- * (Reduce phase) The reduce function is applied to each of the sorted sequences of intermediary elements, producing a sequence of output elements.
- * The output is a concatenation of all sequences of output elements.
+Q2
+Since every thread is being duplicated by the fork function, the line is going to be printed 2n times.
+the first n lines by the child threads and the other half by the child threads after the
 
-FileWordCounter.cpp -
- * The input is a directory name
- * (Map phase) for each file in the directory we count how many times each word appeared (a word is anything between two spaces) 
- * (Sort/Shuffle phases) Combine all counts of each word, now for every word (that appears in any of the files) we have a sequence of counts, one per file
- * (Reduce phase) For each word we sum over its respective sequence and produce the sum as a single output.
- * The output is a sequence of the sums.
+Q3
+The children threads have n! options of printing and the parents thread have n! option, therefor there are n!*n! = n!^2 options
 
-
-
-Makefile builds both clients, and depends on having libMapReduceFramework.a in
-current directory or parent directory

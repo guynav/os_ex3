@@ -65,39 +65,284 @@ CMAKE_SOURCE_DIR = /cs/usr/toozig/year3/OS/os_ex3
 CMAKE_BINARY_DIR = /cs/usr/toozig/year3/OS/os_ex3/cmake-build-debug
 
 #=============================================================================
-# Target rules for target CMakeFiles/os_ex3.dir
+# Target rules for target CMakeFiles/MapReduceFramework.dir
 
 # All Build rule for target.
-CMakeFiles/os_ex3.dir/all:
-	$(MAKE) -f CMakeFiles/os_ex3.dir/build.make CMakeFiles/os_ex3.dir/depend
-	$(MAKE) -f CMakeFiles/os_ex3.dir/build.make CMakeFiles/os_ex3.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/cs/usr/toozig/year3/OS/os_ex3/cmake-build-debug/CMakeFiles --progress-num=1,2,3,4,5 "Built target os_ex3"
-.PHONY : CMakeFiles/os_ex3.dir/all
+CMakeFiles/MapReduceFramework.dir/all:
+	$(MAKE) -f CMakeFiles/MapReduceFramework.dir/build.make CMakeFiles/MapReduceFramework.dir/depend
+	$(MAKE) -f CMakeFiles/MapReduceFramework.dir/build.make CMakeFiles/MapReduceFramework.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/cs/usr/toozig/year3/OS/os_ex3/cmake-build-debug/CMakeFiles --progress-num=1,2,3 "Built target MapReduceFramework"
+.PHONY : CMakeFiles/MapReduceFramework.dir/all
 
 # Include target in all.
-all: CMakeFiles/os_ex3.dir/all
+all: CMakeFiles/MapReduceFramework.dir/all
 
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/os_ex3.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /cs/usr/toozig/year3/OS/os_ex3/cmake-build-debug/CMakeFiles 5
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/os_ex3.dir/all
+CMakeFiles/MapReduceFramework.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /cs/usr/toozig/year3/OS/os_ex3/cmake-build-debug/CMakeFiles 3
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/MapReduceFramework.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /cs/usr/toozig/year3/OS/os_ex3/cmake-build-debug/CMakeFiles 0
-.PHONY : CMakeFiles/os_ex3.dir/rule
+.PHONY : CMakeFiles/MapReduceFramework.dir/rule
 
 # Convenience name for target.
-os_ex3: CMakeFiles/os_ex3.dir/rule
+MapReduceFramework: CMakeFiles/MapReduceFramework.dir/rule
 
-.PHONY : os_ex3
-
-# clean rule for target.
-CMakeFiles/os_ex3.dir/clean:
-	$(MAKE) -f CMakeFiles/os_ex3.dir/build.make CMakeFiles/os_ex3.dir/clean
-.PHONY : CMakeFiles/os_ex3.dir/clean
+.PHONY : MapReduceFramework
 
 # clean rule for target.
-clean: CMakeFiles/os_ex3.dir/clean
+CMakeFiles/MapReduceFramework.dir/clean:
+	$(MAKE) -f CMakeFiles/MapReduceFramework.dir/build.make CMakeFiles/MapReduceFramework.dir/clean
+.PHONY : CMakeFiles/MapReduceFramework.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/MapReduceFramework.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Directory level rules for directory mattanTests
+
+# Convenience name for "all" pass in the directory.
+mattanTests/all: mattanTests/CMakeFiles/mattanTester.dir/all
+mattanTests/all: mattanTests/googletest-build/all
+
+.PHONY : mattanTests/all
+
+# Convenience name for "clean" pass in the directory.
+mattanTests/clean: mattanTests/CMakeFiles/mattanTester.dir/clean
+mattanTests/clean: mattanTests/googletest-build/clean
+
+.PHONY : mattanTests/clean
+
+# Convenience name for "preinstall" pass in the directory.
+mattanTests/preinstall: mattanTests/googletest-build/preinstall
+
+.PHONY : mattanTests/preinstall
+
+#=============================================================================
+# Target rules for target mattanTests/CMakeFiles/mattanTester.dir
+
+# All Build rule for target.
+mattanTests/CMakeFiles/mattanTester.dir/all: CMakeFiles/MapReduceFramework.dir/all
+mattanTests/CMakeFiles/mattanTester.dir/all: mattanTests/googletest-build/googletest/CMakeFiles/gtest_main.dir/all
+mattanTests/CMakeFiles/mattanTester.dir/all: mattanTests/googletest-build/googletest/CMakeFiles/gtest.dir/all
+	$(MAKE) -f mattanTests/CMakeFiles/mattanTester.dir/build.make mattanTests/CMakeFiles/mattanTester.dir/depend
+	$(MAKE) -f mattanTests/CMakeFiles/mattanTester.dir/build.make mattanTests/CMakeFiles/mattanTester.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/cs/usr/toozig/year3/OS/os_ex3/cmake-build-debug/CMakeFiles --progress-num=12,13 "Built target mattanTester"
+.PHONY : mattanTests/CMakeFiles/mattanTester.dir/all
+
+# Include target in all.
+all: mattanTests/CMakeFiles/mattanTester.dir/all
+
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+mattanTests/CMakeFiles/mattanTester.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /cs/usr/toozig/year3/OS/os_ex3/cmake-build-debug/CMakeFiles 9
+	$(MAKE) -f CMakeFiles/Makefile2 mattanTests/CMakeFiles/mattanTester.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /cs/usr/toozig/year3/OS/os_ex3/cmake-build-debug/CMakeFiles 0
+.PHONY : mattanTests/CMakeFiles/mattanTester.dir/rule
+
+# Convenience name for target.
+mattanTester: mattanTests/CMakeFiles/mattanTester.dir/rule
+
+.PHONY : mattanTester
+
+# clean rule for target.
+mattanTests/CMakeFiles/mattanTester.dir/clean:
+	$(MAKE) -f mattanTests/CMakeFiles/mattanTester.dir/build.make mattanTests/CMakeFiles/mattanTester.dir/clean
+.PHONY : mattanTests/CMakeFiles/mattanTester.dir/clean
+
+# clean rule for target.
+clean: mattanTests/CMakeFiles/mattanTester.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Directory level rules for directory mattanTests/googletest-build
+
+# Convenience name for "all" pass in the directory.
+mattanTests/googletest-build/all: mattanTests/googletest-build/googlemock/all
+
+.PHONY : mattanTests/googletest-build/all
+
+# Convenience name for "clean" pass in the directory.
+mattanTests/googletest-build/clean: mattanTests/googletest-build/googlemock/clean
+
+.PHONY : mattanTests/googletest-build/clean
+
+# Convenience name for "preinstall" pass in the directory.
+mattanTests/googletest-build/preinstall: mattanTests/googletest-build/googlemock/preinstall
+
+.PHONY : mattanTests/googletest-build/preinstall
+
+#=============================================================================
+# Directory level rules for directory mattanTests/googletest-build/googlemock
+
+# Convenience name for "all" pass in the directory.
+mattanTests/googletest-build/googlemock/all: mattanTests/googletest-build/googletest/all
+
+.PHONY : mattanTests/googletest-build/googlemock/all
+
+# Convenience name for "clean" pass in the directory.
+mattanTests/googletest-build/googlemock/clean: mattanTests/googletest-build/googlemock/CMakeFiles/gmock_main.dir/clean
+mattanTests/googletest-build/googlemock/clean: mattanTests/googletest-build/googlemock/CMakeFiles/gmock.dir/clean
+mattanTests/googletest-build/googlemock/clean: mattanTests/googletest-build/googletest/clean
+
+.PHONY : mattanTests/googletest-build/googlemock/clean
+
+# Convenience name for "preinstall" pass in the directory.
+mattanTests/googletest-build/googlemock/preinstall: mattanTests/googletest-build/googletest/preinstall
+
+.PHONY : mattanTests/googletest-build/googlemock/preinstall
+
+#=============================================================================
+# Target rules for target mattanTests/googletest-build/googlemock/CMakeFiles/gmock_main.dir
+
+# All Build rule for target.
+mattanTests/googletest-build/googlemock/CMakeFiles/gmock_main.dir/all: mattanTests/googletest-build/googletest/CMakeFiles/gtest.dir/all
+mattanTests/googletest-build/googlemock/CMakeFiles/gmock_main.dir/all: mattanTests/googletest-build/googlemock/CMakeFiles/gmock.dir/all
+	$(MAKE) -f mattanTests/googletest-build/googlemock/CMakeFiles/gmock_main.dir/build.make mattanTests/googletest-build/googlemock/CMakeFiles/gmock_main.dir/depend
+	$(MAKE) -f mattanTests/googletest-build/googlemock/CMakeFiles/gmock_main.dir/build.make mattanTests/googletest-build/googlemock/CMakeFiles/gmock_main.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/cs/usr/toozig/year3/OS/os_ex3/cmake-build-debug/CMakeFiles --progress-num=6,7 "Built target gmock_main"
+.PHONY : mattanTests/googletest-build/googlemock/CMakeFiles/gmock_main.dir/all
+
+# Build rule for subdir invocation for target.
+mattanTests/googletest-build/googlemock/CMakeFiles/gmock_main.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /cs/usr/toozig/year3/OS/os_ex3/cmake-build-debug/CMakeFiles 6
+	$(MAKE) -f CMakeFiles/Makefile2 mattanTests/googletest-build/googlemock/CMakeFiles/gmock_main.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /cs/usr/toozig/year3/OS/os_ex3/cmake-build-debug/CMakeFiles 0
+.PHONY : mattanTests/googletest-build/googlemock/CMakeFiles/gmock_main.dir/rule
+
+# Convenience name for target.
+gmock_main: mattanTests/googletest-build/googlemock/CMakeFiles/gmock_main.dir/rule
+
+.PHONY : gmock_main
+
+# clean rule for target.
+mattanTests/googletest-build/googlemock/CMakeFiles/gmock_main.dir/clean:
+	$(MAKE) -f mattanTests/googletest-build/googlemock/CMakeFiles/gmock_main.dir/build.make mattanTests/googletest-build/googlemock/CMakeFiles/gmock_main.dir/clean
+.PHONY : mattanTests/googletest-build/googlemock/CMakeFiles/gmock_main.dir/clean
+
+# clean rule for target.
+clean: mattanTests/googletest-build/googlemock/CMakeFiles/gmock_main.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target mattanTests/googletest-build/googlemock/CMakeFiles/gmock.dir
+
+# All Build rule for target.
+mattanTests/googletest-build/googlemock/CMakeFiles/gmock.dir/all: mattanTests/googletest-build/googletest/CMakeFiles/gtest.dir/all
+	$(MAKE) -f mattanTests/googletest-build/googlemock/CMakeFiles/gmock.dir/build.make mattanTests/googletest-build/googlemock/CMakeFiles/gmock.dir/depend
+	$(MAKE) -f mattanTests/googletest-build/googlemock/CMakeFiles/gmock.dir/build.make mattanTests/googletest-build/googlemock/CMakeFiles/gmock.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/cs/usr/toozig/year3/OS/os_ex3/cmake-build-debug/CMakeFiles --progress-num=4,5 "Built target gmock"
+.PHONY : mattanTests/googletest-build/googlemock/CMakeFiles/gmock.dir/all
+
+# Build rule for subdir invocation for target.
+mattanTests/googletest-build/googlemock/CMakeFiles/gmock.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /cs/usr/toozig/year3/OS/os_ex3/cmake-build-debug/CMakeFiles 4
+	$(MAKE) -f CMakeFiles/Makefile2 mattanTests/googletest-build/googlemock/CMakeFiles/gmock.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /cs/usr/toozig/year3/OS/os_ex3/cmake-build-debug/CMakeFiles 0
+.PHONY : mattanTests/googletest-build/googlemock/CMakeFiles/gmock.dir/rule
+
+# Convenience name for target.
+gmock: mattanTests/googletest-build/googlemock/CMakeFiles/gmock.dir/rule
+
+.PHONY : gmock
+
+# clean rule for target.
+mattanTests/googletest-build/googlemock/CMakeFiles/gmock.dir/clean:
+	$(MAKE) -f mattanTests/googletest-build/googlemock/CMakeFiles/gmock.dir/build.make mattanTests/googletest-build/googlemock/CMakeFiles/gmock.dir/clean
+.PHONY : mattanTests/googletest-build/googlemock/CMakeFiles/gmock.dir/clean
+
+# clean rule for target.
+clean: mattanTests/googletest-build/googlemock/CMakeFiles/gmock.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Directory level rules for directory mattanTests/googletest-build/googletest
+
+# Convenience name for "all" pass in the directory.
+mattanTests/googletest-build/googletest/all:
+
+.PHONY : mattanTests/googletest-build/googletest/all
+
+# Convenience name for "clean" pass in the directory.
+mattanTests/googletest-build/googletest/clean: mattanTests/googletest-build/googletest/CMakeFiles/gtest_main.dir/clean
+mattanTests/googletest-build/googletest/clean: mattanTests/googletest-build/googletest/CMakeFiles/gtest.dir/clean
+
+.PHONY : mattanTests/googletest-build/googletest/clean
+
+# Convenience name for "preinstall" pass in the directory.
+mattanTests/googletest-build/googletest/preinstall:
+
+.PHONY : mattanTests/googletest-build/googletest/preinstall
+
+#=============================================================================
+# Target rules for target mattanTests/googletest-build/googletest/CMakeFiles/gtest_main.dir
+
+# All Build rule for target.
+mattanTests/googletest-build/googletest/CMakeFiles/gtest_main.dir/all: mattanTests/googletest-build/googletest/CMakeFiles/gtest.dir/all
+	$(MAKE) -f mattanTests/googletest-build/googletest/CMakeFiles/gtest_main.dir/build.make mattanTests/googletest-build/googletest/CMakeFiles/gtest_main.dir/depend
+	$(MAKE) -f mattanTests/googletest-build/googletest/CMakeFiles/gtest_main.dir/build.make mattanTests/googletest-build/googletest/CMakeFiles/gtest_main.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/cs/usr/toozig/year3/OS/os_ex3/cmake-build-debug/CMakeFiles --progress-num=10,11 "Built target gtest_main"
+.PHONY : mattanTests/googletest-build/googletest/CMakeFiles/gtest_main.dir/all
+
+# Build rule for subdir invocation for target.
+mattanTests/googletest-build/googletest/CMakeFiles/gtest_main.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /cs/usr/toozig/year3/OS/os_ex3/cmake-build-debug/CMakeFiles 4
+	$(MAKE) -f CMakeFiles/Makefile2 mattanTests/googletest-build/googletest/CMakeFiles/gtest_main.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /cs/usr/toozig/year3/OS/os_ex3/cmake-build-debug/CMakeFiles 0
+.PHONY : mattanTests/googletest-build/googletest/CMakeFiles/gtest_main.dir/rule
+
+# Convenience name for target.
+gtest_main: mattanTests/googletest-build/googletest/CMakeFiles/gtest_main.dir/rule
+
+.PHONY : gtest_main
+
+# clean rule for target.
+mattanTests/googletest-build/googletest/CMakeFiles/gtest_main.dir/clean:
+	$(MAKE) -f mattanTests/googletest-build/googletest/CMakeFiles/gtest_main.dir/build.make mattanTests/googletest-build/googletest/CMakeFiles/gtest_main.dir/clean
+.PHONY : mattanTests/googletest-build/googletest/CMakeFiles/gtest_main.dir/clean
+
+# clean rule for target.
+clean: mattanTests/googletest-build/googletest/CMakeFiles/gtest_main.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target mattanTests/googletest-build/googletest/CMakeFiles/gtest.dir
+
+# All Build rule for target.
+mattanTests/googletest-build/googletest/CMakeFiles/gtest.dir/all:
+	$(MAKE) -f mattanTests/googletest-build/googletest/CMakeFiles/gtest.dir/build.make mattanTests/googletest-build/googletest/CMakeFiles/gtest.dir/depend
+	$(MAKE) -f mattanTests/googletest-build/googletest/CMakeFiles/gtest.dir/build.make mattanTests/googletest-build/googletest/CMakeFiles/gtest.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/cs/usr/toozig/year3/OS/os_ex3/cmake-build-debug/CMakeFiles --progress-num=8,9 "Built target gtest"
+.PHONY : mattanTests/googletest-build/googletest/CMakeFiles/gtest.dir/all
+
+# Build rule for subdir invocation for target.
+mattanTests/googletest-build/googletest/CMakeFiles/gtest.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /cs/usr/toozig/year3/OS/os_ex3/cmake-build-debug/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 mattanTests/googletest-build/googletest/CMakeFiles/gtest.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /cs/usr/toozig/year3/OS/os_ex3/cmake-build-debug/CMakeFiles 0
+.PHONY : mattanTests/googletest-build/googletest/CMakeFiles/gtest.dir/rule
+
+# Convenience name for target.
+gtest: mattanTests/googletest-build/googletest/CMakeFiles/gtest.dir/rule
+
+.PHONY : gtest
+
+# clean rule for target.
+mattanTests/googletest-build/googletest/CMakeFiles/gtest.dir/clean:
+	$(MAKE) -f mattanTests/googletest-build/googletest/CMakeFiles/gtest.dir/build.make mattanTests/googletest-build/googletest/CMakeFiles/gtest.dir/clean
+.PHONY : mattanTests/googletest-build/googletest/CMakeFiles/gtest.dir/clean
+
+# clean rule for target.
+clean: mattanTests/googletest-build/googletest/CMakeFiles/gtest.dir/clean
 
 .PHONY : clean
 

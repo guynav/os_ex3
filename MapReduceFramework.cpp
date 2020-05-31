@@ -2,22 +2,26 @@
 #include <pthread.h>
 #include <atomic>
 #include <queue>
+#include <iostream>
 #include "Barrier.h"
 
+static const char * const ERROR_MSG = "system error:";
 /**
  * THis struct represents the context in which a thread works, including its id, mutexes and job context. Also stores
  * key value pairs which have already been mapped.
  */
-typedef struct {
+typedef struct
+{
     int id;
-    pthread_t *thread;
+    pthread_t * thread;
     pthread_mutex_t shuffle_mutex;
     std::vector<IntermediatePair> * toShuffle;
-    void *jc;
+    void * jc;
 } ThreadContext;
 
-void *mapThread(void *args);
-void *shuffleThread(void *args);
+void * mapThread(void * args);
+
+void * shuffleThread(void * args);
 
 /**
  * THIs class represents the context of a job done, including threads
@@ -33,34 +37,46 @@ public:
      * @param _out_vec the output vector
      * @param multiThreadLevel the amount fo threads to be used in this job
      */
-    JobContext(const MapReduceClient &_client, const InputVec& _in_vec, OutputVec& _out_vec, int
+    JobContext(const MapReduceClient &_client, const InputVec &_in_vec, OutputVec &_out_vec, int
     multiThreadLevel)
-    : stage(UNDEFINED_STAGE), client(_client), in_vec(_in_vec), intermedita_vec(nullptr), k2Vec
-    (nullptr), out_vec(_out_vec),
-    barrier(Barrier(multiThreadLevel)), threadAmount(multiThreadLevel)
+            : stage(UNDEFINED_STAGE), client(_client), in_vec(_in_vec), intermedita_vec(nullptr), k2Vec
+            (nullptr), out_vec(_out_vec),
+              barrier(Barrier(multiThreadLevel)), threadAmount(multiThreadLevel), doneMap(false)
     {
-        threads = new ThreadContext[multiThreadLevel];
-        intermedita_vec = new IntermediateMap();
+        try
+        {
+            threads = new ThreadContext[multiThreadLevel];
+            intermedita_vec = new IntermediateMap();
+        }
+        catch (std::bad_alloc &ba)
+        {
+            std::cerr << ERROR_MSG << "bad_alloc caught: " << ba.what() << '\n';
+            exit(1);
+        }
+
         atomic_init(&mapCounter, 0);
         atomic_init(&reduceCounter, 0);
+        atomic_init(&mapFinishCounter, 0);
         pthread_mutex_init(&map_mutex, nullptr);
         pthread_mutex_init(&reduce_mutex, nullptr);
 
 
-        for(int i = 1; i< multiThreadLevel; i++)
+        for (int i = 0; i < multiThreadLevel; i++)
         {
             threads[i].id = i;
-            threads[i].toShuffle = new std::vector<IntermediatePair>();
-            threads[i].thread = new pthread_t;
+            try
+            {
+                threads[i].toShuffle = new std::vector<IntermediatePair>();
+                threads[i].thread = new pthread_t;
+            } catch (std::bad_alloc &ba)
+            {
+                std::cerr << ERROR_MSG << "bad_alloc caught: " << ba.what() << '\n';
+                exit(1);
+            }
             threads[i].jc = this;
             pthread_mutex_init(&threads[i].shuffle_mutex, nullptr);
             //help me, I'm dying.
         }
-        threads[0].id = 0;
-        threads[0].toShuffle = new std::vector<IntermediatePair>();
-        threads[0].thread = new pthread_t;
-        threads[0].jc = this;
-        pthread_mutex_init(&threads[0].shuffle_mutex, nullptr);
     };
 
     /**
@@ -68,7 +84,7 @@ public:
      */
     ~JobContext()
     {
-        for (int i = 0; i<threadAmount; i++)
+        for (int i = 0; i < threadAmount; i++)
         {
             pthread_mutex_lock(&threads[i].shuffle_mutex);
             delete threads[i].toShuffle;
@@ -77,7 +93,7 @@ public:
             delete threads[i].thread;
 //            delete threads[i].toShuffle;
         }
-        delete [] threads;
+        delete[] threads;
         delete intermedita_vec;
         delete k2Vec;
         pthread_mutex_destroy(&reduce_mutex);
@@ -89,8 +105,8 @@ public:
     stage_t stage;
     const MapReduceClient &client;
     const InputVec &in_vec;
-    IntermediateMap *intermedita_vec;
-    std::vector<K2 *> *k2Vec;
+    IntermediateMap * intermedita_vec;
+    std::vector<K2 *> * k2Vec;
     OutputVec &out_vec;
     std::atomic<int> mapCounter;
     std::atomic<int> reduceCounter;
@@ -99,6 +115,8 @@ public:
     pthread_mutex_t reduce_mutex;
     Barrier barrier;
     int threadAmount;
+    std::atomic<int> mapFinishCounter;
+    bool doneMap;
 };
 
 /**
@@ -106,23 +124,25 @@ public:
  * @param args the context of this reduce
  */
 
-void reduceThread(void *args) {
-    auto *tc = (ThreadContext *) args;
-    auto *jc = (JobContext *) tc->jc;
+void reduceThread(void * args)
+{
+    auto * tc = (ThreadContext *) args;
+    auto * jc = (JobContext *) tc->jc;
     int tempReduceCounter;
-    while ((int) jc->reduceCounter < jc->k2Vec->size()) {
+    while ((int) jc->reduceCounter < jc->k2Vec->size())
+    {
         pthread_mutex_lock(&(jc->reduce_mutex));
 //        pthread_mutex_lock(&(jc->map_mutex));
         tempReduceCounter = jc->reduceCounter++;
+
         pthread_mutex_unlock(&jc->reduce_mutex);
-//        pthread_mutex_unlock(&jc->map_mutex);
-        if(tempReduceCounter >= jc->k2Vec->size())
+
+        if (tempReduceCounter >= jc->k2Vec->size())
         {
             break;
         }
-        K2  * currKey = jc->k2Vec->at(tempReduceCounter);
-        //std::cout << "I'm reducing" << std::endl;
-        // in case the counter reached the limit
+        K2 * currKey = jc->k2Vec->at(tempReduceCounter);
+
         jc->client.reduce(currKey, jc->intermedita_vec->find(currKey)->second, (void *) jc);
     }
 }
@@ -132,11 +152,13 @@ void reduceThread(void *args) {
  * @param args the thread context of this map operation
  * @return nullptr
  */
-void *mapThread(void *args) {
-    auto *tc = (ThreadContext *) args;
-    auto *jc = (JobContext *) tc->jc;
+void * mapThread(void * args)
+{
+    auto * tc = (ThreadContext *) args;
+    auto * jc = (JobContext *) tc->jc;
     int tempMapCounter;
-    while (jc->mapCounter < jc->in_vec.size()) {
+    while (jc->mapCounter < jc->in_vec.size())
+    {
         pthread_mutex_lock(&(jc->map_mutex));
         if (jc->mapCounter == jc->in_vec.size())
         {
@@ -144,10 +166,15 @@ void *mapThread(void *args) {
             break; //todo ask whether all thtreads should be initiated before starting to run
         }
         tempMapCounter = jc->mapCounter++; // todo added the '++' after map counter
-//        jc->mapCounter++;
         pthread_mutex_unlock(&jc->map_mutex);
-        //std::cout << "I'm mapping" << std::endl;
         jc->client.map(jc->in_vec[tempMapCounter].first, jc->in_vec[tempMapCounter].second, args);
+    }
+    int tempc;
+    pthread_mutex_lock(&jc->reduce_mutex);
+    tempc = jc->mapFinishCounter++;
+    pthread_mutex_unlock(&jc->reduce_mutex);
+    if(tempc == jc->threadAmount - 2){
+        jc->doneMap = true;
     }
     jc->barrier.barrier();
     //start reduce
@@ -155,20 +182,30 @@ void *mapThread(void *args) {
     return nullptr;
 }
 
+
+
+
 /**
  * THIs function performs the shuffle operation on threads
  * @param args the context of the thread performing this operation
  * @return nullptr
  */
-void *shuffleThread(void *args)
+void * shuffleThread(void * args)
 {
-    auto tc = (ThreadContext*) args;
+    auto tc = (ThreadContext *) args;
     auto jc = (JobContext *) tc->jc;
-    auto *toShuffle = tc->toShuffle;
+    auto * toShuffle = tc->toShuffle;
+    bool notLastround = true;
     int pushedCounter = 0;
     jc->stage = MAP_STAGE; //todo verify this is the correct stage and not shuffle
-    while (pushedCounter < jc->in_vec.size()) {
-        for (int i = 1; i < jc->threadAmount; i++) {
+    while (!jc->doneMap or notLastround)
+    {
+        if(jc->doneMap){
+            notLastround = false;
+        }
+
+        for (int i = 1; i < jc->threadAmount; i++)
+        {
             pthread_mutex_lock(&jc->threads[i].shuffle_mutex);
             if (!jc->threads[i].toShuffle->empty())
             {
@@ -186,15 +223,25 @@ void *shuffleThread(void *args)
                         jc->intermedita_vec->at(element.first).push_back(element.second);
                     }
                 }
-                pushedCounter += toShuffle->size();
                 toShuffle->clear();
-            } else {
+            }
+            else
+            {
                 pthread_mutex_unlock(&jc->threads[i].shuffle_mutex);
             }
         }
     }
-    jc->k2Vec = new std::vector<K2 *>();
-    for (auto element = jc->intermedita_vec->begin(); element != jc->intermedita_vec->end(); ++element) {
+    try
+    {
+        jc->k2Vec = new std::vector<K2 *>();
+    } catch (std::bad_alloc &ba)
+    {
+        std::cerr << ERROR_MSG << "bad_alloc caught: " << ba.what() << '\n';
+        exit(1);
+    }
+
+    for (auto element = jc->intermedita_vec->begin(); element != jc->intermedita_vec->end(); ++element)
+    {
         jc->k2Vec->push_back(element->first);
     }
     pthread_mutex_unlock(&jc->reduce_mutex);
@@ -215,19 +262,36 @@ void *shuffleThread(void *args)
  */
 JobHandle startMapReduceJob(const MapReduceClient &client,
                             const InputVec &inputVec, OutputVec &outputVec,
-                            int multiThreadLevel) {
+                            int multiThreadLevel)
+{
     //create job context
-    JobContext * jc = new JobContext(client,inputVec, outputVec, multiThreadLevel);
+    JobContext * jc;
+    try
+    {
+        jc = new JobContext(client, inputVec, outputVec, multiThreadLevel);
+    }
+    catch (std::bad_alloc &ba)
+    {
+        std::cerr << ERROR_MSG << "bad_alloc caught: " << ba.what() << '\n';
+        exit(1);
+    }
 //    std::shared_ptr<JobContext> jc = std::make_shared<JobContext>(  (JobContext(client,inputVec, outputVec, multiThreadLevel)));
     //create threads and their respective mutexes
-    for(int i = 1; i< multiThreadLevel; i++)
+    for (int i = 1; i < multiThreadLevel; i++)
     {
 //        auto stam = jc->threads[i];
-        pthread_create(jc->threads[i].thread, nullptr, mapThread, &jc->threads[i]);
-
+        if (pthread_create(jc->threads[i].thread, nullptr, mapThread, &jc->threads[i]))
+        {
+            std::cerr << ERROR_MSG << " Could not create thread" << '\n';
+            exit(1);
+        }
         //help me, I'm dying.
     }
-    pthread_create(jc->threads[0].thread, nullptr, shuffleThread, &jc->threads[0]);
+    if (pthread_create(jc->threads[0].thread, nullptr, shuffleThread, &jc->threads[0]))
+    {
+        std::cerr << ERROR_MSG << " Could not create thread" << '\n';
+        exit(1);
+    }
 
 
     //barrier
@@ -242,7 +306,8 @@ JobHandle startMapReduceJob(const MapReduceClient &client,
  * @param value the value of the pair
  * @param context object to produce context from
  */
-void emit2(K2 *key, V2 *value, void *context) {
+void emit2(K2 * key, V2 * value, void * context)
+{
     auto tc = (ThreadContext *) context;
     IntermediatePair tempPair(key, value);
     pthread_mutex_lock(&tc->shuffle_mutex);
@@ -256,8 +321,9 @@ void emit2(K2 *key, V2 *value, void *context) {
  * @param value the value of the pair
  * @param context object to produce context from
  */
-void emit3(K3 *key, V3 *value, void *context) {
-    auto *jc = (JobContext *) context;
+void emit3(K3 * key, V3 * value, void * context)
+{
+    auto * jc = (JobContext *) context;
 
     OutputPair tempPair(key, value);
     pthread_mutex_lock(&jc->reduce_mutex);
@@ -270,11 +336,12 @@ void emit3(K3 *key, V3 *value, void *context) {
  */
 void getJobState(JobHandle job, JobState * state)
 {
-    JobContext * jc = (JobContext*) job;
+    JobContext * jc = (JobContext *) job;
     bool cond;
     float curPercent;
     state->stage = jc->stage;
-    switch(state->stage){
+    switch (state->stage)
+    {
         case UNDEFINED_STAGE:
             state->percentage = 0;
             break;
@@ -283,8 +350,8 @@ void getJobState(JobHandle job, JobState * state)
             state->percentage = curPercent < 100 ? curPercent : 100;
             break;
         case REDUCE_STAGE:
-            curPercent = 100 * ((float )  jc->reduceCounter /(float) jc->intermedita_vec->size());
-            state->percentage  =  curPercent < 100 ? curPercent: 100;
+            curPercent = 100 * ((float) jc->reduceCounter / (float) jc->intermedita_vec->size());
+            state->percentage = curPercent < 100 ? curPercent : 100;
     }
 }
 
@@ -294,8 +361,9 @@ void getJobState(JobHandle job, JobState * state)
  */
 void waitForJob(JobHandle job)
 {
-    auto jc = (JobContext*) job;
-    for(int i = 0; i < jc->threadAmount; i++){
+    auto jc = (JobContext *) job;
+    for (int i = 0; i < jc->threadAmount; i++)
+    {
         pthread_join(*jc->threads[i].thread, nullptr);
     }
 }
@@ -308,8 +376,8 @@ void waitForJob(JobHandle job)
 void closeJobHandle(JobHandle job)
 {
     waitForJob(job);
-    auto jc = (JobContext*) job;
-    delete  jc;
+    auto jc = (JobContext *) job;
+    delete jc;
 }
 
 
