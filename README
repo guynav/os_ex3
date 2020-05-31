@@ -1,0 +1,20 @@
+HUJI 67808 - Operating Systems - Ex3 - Map Reduce Client Example
+
+SampleClient.cpp - 
+ * The input is given as a sequence of input elements.
+ * (Map phase) The map function is applied to each input element, producing a sequence of intermediary elements.
+ * (Sort/Shuffle phases) The intermediary elements are sorted into new sequences (more on this later).
+ * (Reduce phase) The reduce function is applied to each of the sorted sequences of intermediary elements, producing a sequence of output elements.
+ * The output is a concatenation of all sequences of output elements.
+
+FileWordCounter.cpp -
+ * The input is a directory name
+ * (Map phase) for each file in the directory we count how many times each word appeared (a word is anything between two spaces) 
+ * (Sort/Shuffle phases) Combine all counts of each word, now for every word (that appears in any of the files) we have a sequence of counts, one per file
+ * (Reduce phase) For each word we sum over its respective sequence and produce the sum as a single output.
+ * The output is a sequence of the sums.
+
+
+
+Makefile builds both clients, and depends on having libMapReduceFramework.a in
+current directory or parent directory
