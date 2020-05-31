@@ -97,9 +97,6 @@
 		<Unit filename="/cs/usr/toozig/year3/OS/os_ex3/MapReduceFramwork.cpp">
 			<Option target="ex3_os"/>
 		</Unit>
-		<Unit filename="/cs/usr/toozig/year3/OS/os_ex3/SampleClient.cpp">
-			<Option target="ex3_os"/>
-		</Unit>
 		<Unit filename="/cs/usr/toozig/year3/OS/os_ex3/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

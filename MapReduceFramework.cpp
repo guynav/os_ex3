@@ -1,12 +1,13 @@
 #include "MapReduceFramework.h"
 #include <pthread.h>
 #include <atomic>
-#include <memory>
 #include <queue>
-#include <iostream>
 #include "Barrier.h"
-#include <algorithm>
 
+/**
+ * THis struct represents the context in which a thread works, including its id, mutexes and job context. Also stores
+ * key value pairs which have already been mapped.
+ */
 typedef struct {
     int id;
     pthread_t *thread;
@@ -18,9 +19,20 @@ typedef struct {
 void *mapThread(void *args);
 void *shuffleThread(void *args);
 
+/**
+ * THIs class represents the context of a job done, including threads
+ */
+
 class JobContext
 {
 public:
+    /**
+     * COnstructor for this class
+     * @param _client the client for this job
+     * @param _in_vec the input vector
+     * @param _out_vec the output vector
+     * @param multiThreadLevel the amount fo threads to be used in this job
+     */
     JobContext(const MapReduceClient &_client, const InputVec& _in_vec, OutputVec& _out_vec, int
     multiThreadLevel)
     : stage(UNDEFINED_STAGE), client(_client), in_vec(_in_vec), intermedita_vec(nullptr), k2Vec
@@ -49,8 +61,11 @@ public:
         threads[0].thread = new pthread_t;
         threads[0].jc = this;
         pthread_mutex_init(&threads[0].shuffle_mutex, nullptr);
-        //pthread_create(threads[0].thread, nullptr, shuffleThread, &threads[0]);
     };
+
+    /**
+     * Destructor for this class
+     */
     ~JobContext()
     {
         for (int i = 0; i<threadAmount; i++)
@@ -58,12 +73,17 @@ public:
             pthread_mutex_lock(&threads[i].shuffle_mutex);
             delete threads[i].toShuffle;
             pthread_mutex_unlock(&threads[i].shuffle_mutex);
-            delete &threads[i].shuffle_mutex;
+            pthread_mutex_destroy(&threads[i].shuffle_mutex);
             delete threads[i].thread;
-            delete threads[i].toShuffle;
-            delete &threads[i];
+//            delete threads[i].toShuffle;
         }
-        //delete intermedita_vec;
+        delete [] threads;
+        delete intermedita_vec;
+        delete k2Vec;
+        pthread_mutex_destroy(&reduce_mutex);
+        pthread_mutex_destroy(&map_mutex);
+//        delete &mapCounter;
+//        delete &reduceCounter;
     };
 
     stage_t stage;
@@ -81,6 +101,10 @@ public:
     int threadAmount;
 };
 
+/**
+ * This function performs reduce operation on intermediate vector input
+ * @param args the context of this reduce
+ */
 
 void reduceThread(void *args) {
     auto *tc = (ThreadContext *) args;
@@ -103,6 +127,11 @@ void reduceThread(void *args) {
     }
 }
 
+/**
+ * THis funciton performs the map operation on input vector
+ * @param args the thread context of this map operation
+ * @return nullptr
+ */
 void *mapThread(void *args) {
     auto *tc = (ThreadContext *) args;
     auto *jc = (JobContext *) tc->jc;
@@ -114,8 +143,8 @@ void *mapThread(void *args) {
             pthread_mutex_unlock(&jc->map_mutex);
             break; //todo ask whether all thtreads should be initiated before starting to run
         }
-        tempMapCounter = jc->mapCounter;
-        jc->mapCounter++;;
+        tempMapCounter = jc->mapCounter++; // todo added the '++' after map counter
+//        jc->mapCounter++;
         pthread_mutex_unlock(&jc->map_mutex);
         //std::cout << "I'm mapping" << std::endl;
         jc->client.map(jc->in_vec[tempMapCounter].first, jc->in_vec[tempMapCounter].second, args);
@@ -126,11 +155,16 @@ void *mapThread(void *args) {
     return nullptr;
 }
 
+/**
+ * THIs function performs the shuffle operation on threads
+ * @param args the context of the thread performing this operation
+ * @return nullptr
+ */
 void *shuffleThread(void *args)
 {
     auto tc = (ThreadContext*) args;
     auto jc = (JobContext *) tc->jc;
-    auto *toShuffle = new std::vector<IntermediatePair>;
+    auto *toShuffle = tc->toShuffle;
     int pushedCounter = 0;
     jc->stage = MAP_STAGE; //todo verify this is the correct stage and not shuffle
     while (pushedCounter < jc->in_vec.size()) {
@@ -159,7 +193,6 @@ void *shuffleThread(void *args)
             }
         }
     }
-    delete toShuffle; //might delete automatically
     jc->k2Vec = new std::vector<K2 *>();
     for (auto element = jc->intermedita_vec->begin(); element != jc->intermedita_vec->end(); ++element) {
         jc->k2Vec->push_back(element->first);
@@ -171,12 +204,21 @@ void *shuffleThread(void *args)
     return nullptr;
 }
 
+/**
+ * THIs funciton starts running the MapREduce algorithm (with several threads)
+ * @param client THe task the framework should run
+ * @param inputVec vector of type std::vector<std::pair<K1*, V1*>>
+ * @param outputVec vector of type std::vector<std::pair<K3*, V3*>> to which the output elements will be added before
+ * returning
+ * @param multiThreadLevel the number of worker threads to be used for running the algorithm
+ * @return JobHandle
+ */
 JobHandle startMapReduceJob(const MapReduceClient &client,
                             const InputVec &inputVec, OutputVec &outputVec,
                             int multiThreadLevel) {
     //create job context
-
-    std::shared_ptr<JobContext> jc(new JobContext(client,inputVec, outputVec, multiThreadLevel));
+    JobContext * jc = new JobContext(client,inputVec, outputVec, multiThreadLevel);
+//    std::shared_ptr<JobContext> jc = std::make_shared<JobContext>(  (JobContext(client,inputVec, outputVec, multiThreadLevel)));
     //create threads and their respective mutexes
     for(int i = 1; i< multiThreadLevel; i++)
     {
@@ -191,9 +233,15 @@ JobHandle startMapReduceJob(const MapReduceClient &client,
     //barrier
     //reduce
     //return job handle
-    return (JobHandle) &(*jc);
+    return (JobHandle) jc;
 }
 
+/**
+ * This function produces (K2*, V2*)pair
+ * @param key the key of the pair
+ * @param value the value of the pair
+ * @param context object to produce context from
+ */
 void emit2(K2 *key, V2 *value, void *context) {
     auto tc = (ThreadContext *) context;
     IntermediatePair tempPair(key, value);
@@ -202,6 +250,12 @@ void emit2(K2 *key, V2 *value, void *context) {
     pthread_mutex_unlock(&tc->shuffle_mutex);
 }
 
+/**
+ * This function produces (K3*, V3*)pair
+ * @param key the key of the pair
+ * @param value the value of the pair
+ * @param context object to produce context from
+ */
 void emit3(K3 *key, V3 *value, void *context) {
     auto *jc = (JobContext *) context;
 
@@ -211,25 +265,33 @@ void emit3(K3 *key, V3 *value, void *context) {
     pthread_mutex_unlock(&jc->reduce_mutex);
 }
 
+/**
+ * This function gets a job handle and updates the state opf the job into the given JObState struct
+ */
 void getJobState(JobHandle job, JobState * state)
 {
     JobContext * jc = (JobContext*) job;
     bool cond;
+    float curPercent;
     state->stage = jc->stage;
-    switch(jc->stage){
+    switch(state->stage){
         case UNDEFINED_STAGE:
             state->percentage = 0;
             break;
         case MAP_STAGE:
-            cond = ((float) jc->mapCounter < (float) jc->in_vec.size());
-            state->percentage = cond? 100 * ((float) jc->mapCounter / (float) jc->in_vec.size()) : 100;
+            curPercent = 100 * ((float) jc->mapCounter / (float) jc->in_vec.size());
+            state->percentage = curPercent < 100 ? curPercent : 100;
             break;
         case REDUCE_STAGE:
-            cond = ((float )  jc->reduceCounter < (float) jc->intermedita_vec->size());
-            state->percentage  =  cond ? 100 * ((float )  jc->reduceCounter /(float) jc->intermedita_vec->size()) : 100;
+            curPercent = 100 * ((float )  jc->reduceCounter /(float) jc->intermedita_vec->size());
+            state->percentage  =  curPercent < 100 ? curPercent: 100;
     }
 }
 
+/**
+ * This function gets a job handle returned by startMapREduceFramework and waits until it is finished
+ * @param job
+ */
 void waitForJob(JobHandle job)
 {
     auto jc = (JobContext*) job;
@@ -238,6 +300,11 @@ void waitForJob(JobHandle job)
     }
 }
 
+/**
+ * Releases all resources of a job. Prevents resource release before the job is finished. Job handle is invalid after
+ * this call
+ * @param job the current job
+ */
 void closeJobHandle(JobHandle job)
 {
     waitForJob(job);
